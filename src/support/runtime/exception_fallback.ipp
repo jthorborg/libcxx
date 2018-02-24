@@ -8,11 +8,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <cstdio>
+//#include <cstdio>
 
 namespace std {
 
 _LIBCPP_SAFE_STATIC static std::terminate_handler  __terminate_handler;
+/*
 _LIBCPP_SAFE_STATIC static std::unexpected_handler __unexpected_handler;
 
 
@@ -37,7 +38,7 @@ void unexpected()
     // unexpected handler should not return
     terminate();
 }
-
+*/
 terminate_handler
 set_terminate(terminate_handler func) _NOEXCEPT
 {
@@ -61,14 +62,14 @@ terminate() _NOEXCEPT
 #endif  // _LIBCPP_NO_EXCEPTIONS
         (*get_terminate())();
         // handler should not return
-        fprintf(stderr, "terminate_handler unexpectedly returned\n");
+        printf("terminate_handler unexpectedly returned\n");
         ::abort();
 #ifndef _LIBCPP_NO_EXCEPTIONS
     }
     catch (...)
     {
         // handler should not throw exception
-        fprintf(stderr, "terminate_handler unexpectedly threw an exception\n");
+        printf("terminate_handler unexpectedly threw an exception\n");
         ::abort();
     }
 #endif  // _LIBCPP_NO_EXCEPTIONS
@@ -81,7 +82,7 @@ bool uncaught_exception() _NOEXCEPT { return uncaught_exceptions() > 0; }
 int uncaught_exceptions() _NOEXCEPT
 {
 #warning uncaught_exception not yet implemented
-  fprintf(stderr, "uncaught_exceptions not yet implemented\n");
+  printf("uncaught_exceptions not yet implemented\n");
   ::abort();
 }
 #endif // !__EMSCRIPTEN__
