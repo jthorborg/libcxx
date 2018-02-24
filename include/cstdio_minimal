@@ -1,0 +1,16 @@
+// -*- C++ -*-
+//===-------------------------- cstdio ------------------------------------===//
+//
+//                     The LLVM Compiler Infrastructure
+//
+// This file is dual licensed under the MIT and the University of Illinois Open
+// Source Licenses. See LICENSE.TXT for details.
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef _LIBCPP_CSTDIO
+#define _LIBCPP_CSTDIO
+
+#define EOF (-1)
+
+#endif  // _LIBCPP_CSTDIO
