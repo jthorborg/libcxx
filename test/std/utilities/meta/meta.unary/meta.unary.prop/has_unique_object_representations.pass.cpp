@@ -1,9 +1,8 @@
 //===----------------------------------------------------------------------===//
 //
-//                     The LLVM Compiler Infrastructure
-//
-// This file is dual licensed under the MIT and the University of Illinois Open
-// Source Licenses. See LICENSE.TXT for details.
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
 
@@ -55,7 +54,8 @@ class NotEmpty
     virtual ~NotEmpty();
 };
 
-union Union {};
+union EmptyUnion {};
+struct NonEmptyUnion {int x; unsigned y;};
 
 struct bit_zero
 {
@@ -80,10 +80,11 @@ struct B
 };
 
 
-int main()
+int main(int, char**)
 {
     test_has_not_has_unique_object_representations<void>();
     test_has_not_has_unique_object_representations<Empty>();
+    test_has_not_has_unique_object_representations<EmptyUnion>();
     test_has_not_has_unique_object_representations<NotEmpty>();
     test_has_not_has_unique_object_representations<bit_zero>();
     test_has_not_has_unique_object_representations<Abstract>();
@@ -97,8 +98,10 @@ int main()
 
 
     test_has_unique_object_representations<unsigned>();
-    test_has_unique_object_representations<Union>();
+    test_has_unique_object_representations<NonEmptyUnion>();
     test_has_unique_object_representations<char[3]>();
     test_has_unique_object_representations<char[]>();
 
+
+  return 0;
 }

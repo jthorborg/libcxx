@@ -1,9 +1,8 @@
 //===----------------------------------------------------------------------===//
 //
-//                     The LLVM Compiler Infrastructure
-//
-// This file is dual licensed under the MIT and the University of Illinois Open
-// Source Licenses. See LICENSE.TXT for details.
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
 
@@ -15,20 +14,20 @@
 // {
 // public:
 //     // types:
-// 	using traits_type               = traits;
-// 	using value_type                = charT;
-// 	using pointer                   = value_type*;
-// 	using const_pointer             = const value_type*;
-// 	using reference                 = value_type&;
-// 	using const_reference           = const value_type&;
-// 	using const_iterator            = implementation-defined ; // see 24.4.2.2
-// 	using iterator                  = const_iterator;
-// 	using const_reverse_iterator    = reverse_iterator<const_iterator>;
-// 	using iterator                  = const_reverse_iterator;
-// 	using size_type                 = size_t;
-// 	using difference_type           = ptrdiff_t;
-// 	static constexpr size_type npos = size_type(-1);
-// 
+//     using traits_type               = traits;
+//     using value_type                = charT;
+//     using pointer                   = value_type*;
+//     using const_pointer             = const value_type*;
+//     using reference                 = value_type&;
+//     using const_reference           = const value_type&;
+//     using const_iterator            = implementation-defined ; // see 24.4.2.2
+//     using iterator                  = const_iterator;
+//     using const_reverse_iterator    = reverse_iterator<const_iterator>;
+//     using iterator                  = const_reverse_iterator;
+//     using size_type                 = size_t;
+//     using difference_type           = ptrdiff_t;
+//     static constexpr size_type npos = size_type(-1);
+//
 // };
 
 #include <string_view>
@@ -68,10 +67,15 @@ test()
     static_assert((std::is_same<typename S::reverse_iterator, typename S::const_reverse_iterator>::value), "");
 }
 
-int main()
+int main(int, char**)
 {
     test<std::char_traits<char> >();
     test<std::char_traits<wchar_t> >();
+#if defined(__cpp_lib_char8_t) && __cpp_lib_char8_t >= 201811L
+    test<std::char_traits<char8_t> >();
+#endif
     static_assert((std::is_same<std::basic_string_view<char>::traits_type,
                                 std::char_traits<char> >::value), "");
+
+  return 0;
 }

@@ -1,9 +1,8 @@
 //===----------------------------------------------------------------------===//
 //
-//                     The LLVM Compiler Infrastructure
-//
-// This file is dual licensed under the MIT and the University of Illinois Open
-// Source Licenses. See LICENSE.TXT for details.
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
 
@@ -305,15 +304,17 @@ void constructor_tests()
         using RetT = decltype(std::not_fn(value));
         static_assert(std::is_move_constructible<RetT>::value, "");
         static_assert(std::is_copy_constructible<RetT>::value, "");
-        static_assert(std::is_move_assignable<RetT>::value, "");
-        static_assert(std::is_copy_assignable<RetT>::value, "");
+        LIBCPP_STATIC_ASSERT(std::is_move_assignable<RetT>::value, "");
+        LIBCPP_STATIC_ASSERT(std::is_copy_assignable<RetT>::value, "");
         auto ret = std::not_fn(value);
         assert(ret() == false);
         auto ret2 = std::not_fn(value2);
         assert(ret2() == true);
+#if defined(_LIBCPP_VERSION)
         ret = ret2;
         assert(ret() == true);
         assert(ret2() == true);
+#endif // _LIBCPP_VERSION
     }
     {
         using T = MoveAssignableWrapper;
@@ -322,14 +323,16 @@ void constructor_tests()
         using RetT = decltype(std::not_fn(std::move(value)));
         static_assert(std::is_move_constructible<RetT>::value, "");
         static_assert(!std::is_copy_constructible<RetT>::value, "");
-        static_assert(std::is_move_assignable<RetT>::value, "");
+        LIBCPP_STATIC_ASSERT(std::is_move_assignable<RetT>::value, "");
         static_assert(!std::is_copy_assignable<RetT>::value, "");
         auto ret = std::not_fn(std::move(value));
         assert(ret() == false);
         auto ret2 = std::not_fn(std::move(value2));
         assert(ret2() == true);
+#if defined(_LIBCPP_VERSION)
         ret = std::move(ret2);
         assert(ret() == true);
+#endif // _LIBCPP_VERSION
     }
 }
 
@@ -426,7 +429,7 @@ void throws_in_constructor_test()
     {
         ThrowsOnCopy cp;
         try {
-            std::not_fn(cp);
+            (void)std::not_fn(cp);
             assert(false);
         } catch (int const& value) {
             assert(value == 42);
@@ -599,7 +602,7 @@ void test_lwg2767() {
     }
 }
 
-int main()
+int main(int, char**)
 {
     constructor_tests();
     return_type_tests();
@@ -609,4 +612,6 @@ int main()
     call_operator_forwarding_test();
     call_operator_noexcept_test();
     test_lwg2767();
+
+  return 0;
 }

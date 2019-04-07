@@ -1,9 +1,8 @@
 //===----------------------------------------------------------------------===//
 //
-//                     The LLVM Compiler Infrastructure
-//
-// This file is dual licensed under the MIT and the University of Illinois Open
-// Source Licenses. See LICENSE.TXT for details.
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
 
@@ -22,6 +21,10 @@
 #include <initializer_list>
 
 #include "test_macros.h"
+
+#if TEST_STD_VER > 14
+#include <string_view>
+#endif
 
 template<typename C>
 void test_const_container( const C& c )
@@ -57,7 +60,7 @@ void test_const_array( const T (&array)[Sz] )
     assert (!std::empty(array));
 }
 
-int main()
+int main(int, char**)
 {
     std::vector<int> v; v.push_back(1);
     std::list<int>   l; l.push_back(2);
@@ -74,6 +77,14 @@ int main()
     test_const_container ( a );
     test_const_container ( il );
 
+#if TEST_STD_VER > 14
+    std::string_view sv{"ABC"};
+    test_container ( sv );
+    test_const_container ( sv );
+#endif
+
     static constexpr int arrA [] { 1, 2, 3 };
     test_const_array ( arrA );
+
+  return 0;
 }
