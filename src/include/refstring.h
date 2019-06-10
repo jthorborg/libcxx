@@ -13,10 +13,6 @@
 #include <stdexcept>
 #include <cstddef>
 #include <cstring>
-#ifdef __APPLE__
-#include <dlfcn.h>
-#include <mach-o/dyld.h>
-#endif
 #include "atomic_support.h"
 
 _LIBCPP_BEGIN_NAMESPACE_STD
@@ -44,13 +40,7 @@ inline char * data_from_rep(_Rep_base *rep) noexcept {
 inline
 const char* compute_gcc_empty_string_storage() _NOEXCEPT
 {
-    void* handle = dlopen("/usr/lib/libstdc++.6.dylib", RTLD_NOLOAD);
-    if (handle == nullptr)
-        return nullptr;
-    void* sym = dlsym(handle, "_ZNSs4_Rep20_S_empty_rep_storageE");
-    if (sym == nullptr)
-        return nullptr;
-    return data_from_rep(reinterpret_cast<_Rep_base *>(sym));
+    return nullptr;
 }
 
 inline
